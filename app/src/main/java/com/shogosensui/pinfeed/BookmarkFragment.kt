@@ -84,7 +84,6 @@ class BookmarkFragment : Fragment() {
     }
 
     companion object {
-
         // TODO: Customize parameter argument names
         private val ARG_COLUMN_COUNT = "column-count"
 
