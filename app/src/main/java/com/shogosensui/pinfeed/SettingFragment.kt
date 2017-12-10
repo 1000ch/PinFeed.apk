@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class BookmarkListFragment : Fragment() {
+class SettingFragment : Fragment() {
     companion object {
         fun getInstance() : BookmarkListFragment {
             return BookmarkListFragment()
@@ -14,6 +14,6 @@ class BookmarkListFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater!!.inflate(R.layout.fragment_bookmark_list, container, false)
+        return inflater!!.inflate(R.layout.fragment_setting, container, false)
     }
 }
