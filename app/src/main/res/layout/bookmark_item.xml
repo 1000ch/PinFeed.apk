@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bookmark_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/bookmark_item_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="user name" />
+
+    <TextView
+        android:id="@+id/bookmark_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="relative date"
+        app:layout_constraintEnd_toEndOf="@id/bookmark_item" />
+
+    <TextView
+        android:id="@+id/bookmark_item_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/bookmark_item_username"
+        tools:text="comment" />
+
+    <TextView
+        android:id="@+id/bookmark_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/bookmark_item_comment"
+        tools:text="title" />
+</android.support.constraint.ConstraintLayout>
