@@ -3,4 +3,7 @@
     <string name="title_timeline">Timeline</string>
     <string name="title_bookmark">Bookmark</string>
     <string name="title_setting">Setting</string>
+    <string name="setting_pinboard">setting_pinboard</string>
+    <string name="setting_user_id">setting_user_id</string>
+    <string name="setting_password">setting_password</string>
 </resources>
