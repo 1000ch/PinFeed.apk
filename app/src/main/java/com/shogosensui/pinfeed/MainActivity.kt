@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var bookmark: BookmarkListFragment
     lateinit var setting: SettingFragment
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_timeline -> {
                 fragmentManager
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main)
 
         navigation = findViewById<BottomNavigationView>(R.id.navigation)
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         timeline = BookmarkListFragment()
         bookmark = BookmarkListFragment()
