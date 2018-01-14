@@ -1,12 +1,12 @@
 package com.shogosensui.pinfeed
 
-import android.net.Uri
-import java.util.*
-
 data class BookmarkItem(
-        val title: String,
-        val tags: List<String> = listOf<String>(),
-        val uri: Uri,
-        val date: Date,
-        val author: String,
-        val description: String)
+        val description: String,
+        val extended: String,
+        val hash: String,
+        val href: String,
+        val meta: String,
+        val shared: String,
+        val tags: String,
+        val time: String,
+        val toread: String)

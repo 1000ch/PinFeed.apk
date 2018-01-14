@@ -33,7 +33,6 @@ class BookmarkListFragment : Fragment() {
 
         recyclerView = view as RecyclerView
         val bookmarkItems = mutableListOf<BookmarkItem>()
-        bookmarkItems.add(BookmarkItem("aaa", listOf(), Uri.parse("https://google.co.jp"), Date("2017/12/18"), "1000ch", "テスト"))
         recyclerView.adapter = BookmarkItemAdapter(bookmarkItems)
         recyclerView.layoutManager = LinearLayoutManager(activity)
     }

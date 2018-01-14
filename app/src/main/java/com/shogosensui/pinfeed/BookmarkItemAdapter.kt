@@ -8,10 +8,10 @@ class BookmarkItemAdapter(val bookmarkItems: List<BookmarkItem>) : RecyclerView.
     override fun onBindViewHolder(holder: BookmarkItemViewHolder, position: Int) {
         val bookmarkItem = bookmarkItems[position]
 
-        holder.username.text = bookmarkItem.author
-        holder.date.text = bookmarkItem.date.toString()
-        holder.comment.text = bookmarkItem.description
-        holder.title.text = bookmarkItem.title
+        //holder.username.text = bookmarkItem.author
+        //holder.date.text = bookmarkItem.date.toString()
+        //holder.comment.text = bookmarkItem.description
+        //holder.title.text = bookmarkItem.title
     }
 
     override fun getItemCount(): Int = bookmarkItems.count()
