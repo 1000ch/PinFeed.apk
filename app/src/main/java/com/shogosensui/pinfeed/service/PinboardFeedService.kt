@@ -1,6 +1,6 @@
 package com.shogosensui.pinfeed.service
 
-import com.shogosensui.pinfeed.BookmarkItem
+import com.shogosensui.pinfeed.payload.BookmarkPayload
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -10,6 +10,9 @@ interface PinboardFeedService {
     companion object {
         val baseUrl: String
             get() = "https://feeds.pinboard.in"
+
+        val secretToken: String
+            get() = ""
     }
 
     @GET("/json/secret:{secretToken}/u:{userId}/network/")
@@ -17,12 +20,12 @@ interface PinboardFeedService {
             @Path("secretToken") secretToken: String,
             @Path("userId") userId: String,
             @Query("count") format: Int = 400
-    ): Call<List<BookmarkItem>>
+    ): Call<BookmarkPayload>
 
     @GET("/json/secret:{secretToken}/u:{userId}/")
     fun bookmark(
             @Path("secretToken") secretToken: String,
             @Path("userId") userId: String,
             @Query("count") format: Int = 400
-    ): Call<List<BookmarkItem>>
+    ): Call<BookmarkPayload>
 }

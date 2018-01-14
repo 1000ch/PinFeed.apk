@@ -38,6 +38,30 @@ class MainApplication : Application() {
             override fun onResponse(call: Call<SecretTokenPayload>, response: Response<SecretTokenPayload>) {
                 response.body()?.let {
                     secretToken = it.result
+
+                    feedClient.bookmark(secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
+                        override fun onResponse(call: Call<BookmarkPayload>, response: Response<BookmarkPayload>) {
+                            response.body()?.let {
+                                Log.d("count", it.count().toString())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<BookmarkPayload>, t: Throwable?) {
+                            Log.e("onFailure", "Failed to get bookmark")
+                        }
+                    })
+
+                    feedClient.network(secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
+                        override fun onResponse(call: Call<BookmarkPayload>, response: Response<BookmarkPayload>) {
+                            response.body()?.let {
+                                Log.d("count", it.count().toString())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<BookmarkPayload>, t: Throwable?) {
+                            Log.e("onFailure", "Failed to get network")
+                        }
+                    })
                 }
             }
 
