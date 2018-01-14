@@ -13,19 +13,19 @@ import retrofit2.Response
 class MainApplication : Application() {
     lateinit var apiClient: PinboardApiService
     lateinit var feedClient: PinboardFeedService
-    lateinit var apiToken: String
-    lateinit var secretToken: String
+    lateinit var preference: Preference
 
     override fun onCreate() {
         super.onCreate()
 
         apiClient = ServiceClientProvider.provideApiService()
         feedClient = ServiceClientProvider.provideFeedService()
+        preference = Preference(this)
 
         apiClient.apiToken(PinboardApiService.credentials).enqueue(object : Callback<ApiTokenPayload> {
             override fun onResponse(call: Call<ApiTokenPayload>, response: Response<ApiTokenPayload>) {
                 response.body()?.let {
-                    apiToken = it.result
+                    preference.apiToken = it.result
                 }
             }
 
@@ -37,9 +37,9 @@ class MainApplication : Application() {
         apiClient.secretToken(PinboardApiService.credentials).enqueue(object : Callback<SecretTokenPayload> {
             override fun onResponse(call: Call<SecretTokenPayload>, response: Response<SecretTokenPayload>) {
                 response.body()?.let {
-                    secretToken = it.result
+                    preference.secretToken = it.result
 
-                    feedClient.bookmark(secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
+                    feedClient.bookmark(preference.secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
                         override fun onResponse(call: Call<BookmarkPayload>, response: Response<BookmarkPayload>) {
                             response.body()?.let {
                                 Log.d("count", it.count().toString())
@@ -51,7 +51,7 @@ class MainApplication : Application() {
                         }
                     })
 
-                    feedClient.network(secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
+                    feedClient.network(preference.secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
                         override fun onResponse(call: Call<BookmarkPayload>, response: Response<BookmarkPayload>) {
                             response.body()?.let {
                                 Log.d("count", it.count().toString())
