@@ -1,15 +1,13 @@
 package com.shogosensui.pinfeed
 
 import android.app.Fragment
-import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import java.util.*
+import com.shogosensui.pinfeed.payload.Bookmark
 
 class BookmarkListFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
@@ -32,8 +30,8 @@ class BookmarkListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view as RecyclerView
-        val bookmarkItems = mutableListOf<BookmarkItem>()
-        recyclerView.adapter = BookmarkItemAdapter(bookmarkItems)
+        val bookmarkItems = mutableListOf<Bookmark>()
+        recyclerView.adapter = BookmarkAdapter(bookmarkItems)
         recyclerView.layoutManager = LinearLayoutManager(activity)
     }
 }

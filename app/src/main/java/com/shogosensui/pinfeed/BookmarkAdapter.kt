@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.shogosensui.pinfeed.payload.Bookmark
 
-class BookmarkItemAdapter(val bookmarks: List<Bookmark>) : RecyclerView.Adapter<BookmarkItemViewHolder>() {
-    override fun onBindViewHolder(holder: BookmarkItemViewHolder, position: Int) {
+class BookmarkAdapter(val bookmarks: List<Bookmark>) : RecyclerView.Adapter<BookmarkViewHolder>() {
+    override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
         val bookmark = bookmarks[position]
 
         holder.username.text = bookmark.a
@@ -17,10 +17,10 @@ class BookmarkItemAdapter(val bookmarks: List<Bookmark>) : RecyclerView.Adapter<
 
     override fun getItemCount(): Int = bookmarks.count()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
         val bookmarkItemView = LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.bookmark_item, parent, false)
-        return BookmarkItemViewHolder(bookmarkItemView)
+        return BookmarkViewHolder(bookmarkItemView)
     }
 }
