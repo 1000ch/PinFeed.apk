@@ -13,8 +13,12 @@ class BookmarkListFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
 
     companion object {
-        fun getInstance(): BookmarkListFragment {
-            return BookmarkListFragment()
+        fun getInstance(isTimeline: Boolean): BookmarkListFragment {
+            val fragment = BookmarkListFragment()
+            val args = Bundle()
+            args.putBoolean("isTimeline", isTimeline)
+            fragment.arguments = args
+            return fragment
         }
     }
 
@@ -29,9 +33,15 @@ class BookmarkListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var bookmarks: List<Bookmark>
+        if (arguments.getBoolean("isTimeline")) {
+            bookmarks = MainApplication.bookmark
+        } else {
+            bookmarks = MainApplication.timeline
+        }
+
         recyclerView = view as RecyclerView
-        val bookmarkItems = mutableListOf<Bookmark>()
-        recyclerView.adapter = BookmarkAdapter(bookmarkItems)
+        recyclerView.adapter = BookmarkAdapter(bookmarks)
         recyclerView.layoutManager = LinearLayoutManager(activity)
     }
 }

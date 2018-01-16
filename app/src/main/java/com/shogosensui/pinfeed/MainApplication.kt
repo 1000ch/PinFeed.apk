@@ -2,8 +2,8 @@ package com.shogosensui.pinfeed
 
 import android.app.Application
 import android.util.Log
-import com.shogosensui.pinfeed.payload.*
-import com.shogosensui.pinfeed.service.PinboardApiService
+import com.shogosensui.pinfeed.payload.Bookmark
+import com.shogosensui.pinfeed.payload.BookmarkPayload
 import com.shogosensui.pinfeed.service.PinboardFeedService
 import com.shogosensui.pinfeed.service.ServiceClientProvider
 import retrofit2.Call
@@ -15,6 +15,8 @@ class MainApplication : Application() {
 
     companion object {
         lateinit var preference: Preference
+        lateinit var bookmark: List<Bookmark>
+        lateinit var timeline: List<Bookmark>
     }
 
     override fun onCreate() {
@@ -26,18 +28,19 @@ class MainApplication : Application() {
         feedClient.bookmark(preference.secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
             override fun onResponse(call: Call<BookmarkPayload>, response: Response<BookmarkPayload>) {
                 response.body()?.let {
-                    Log.d("count", it.count().toString())
-                }
-            }
+                    bookmark = it
 
-            override fun onFailure(call: Call<BookmarkPayload>, t: Throwable?) {
-                Log.e("onFailure", "Failed to get bookmark")
-            }
-        })
+                    feedClient.network(preference.secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
+                        override fun onResponse(call: Call<BookmarkPayload>, response: Response<BookmarkPayload>) {
+                            response.body()?.let {
+                                timeline = bookmark.plus(it).sortedBy { b -> b.dt }
+                            }
+                        }
 
-        feedClient.network(preference.secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
-            override fun onResponse(call: Call<BookmarkPayload>, response: Response<BookmarkPayload>) {
-                response.body()?.let {
+                        override fun onFailure(call: Call<BookmarkPayload>, t: Throwable?) {
+                            Log.e("onFailure", "Failed to get network")
+                        }
+                    })
                     Log.d("count", it.count().toString())
                 }
             }

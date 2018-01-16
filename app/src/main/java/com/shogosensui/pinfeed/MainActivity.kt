@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         navigation = findViewById<BottomNavigationView>(R.id.navigation)
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        timeline = BookmarkListFragment()
-        bookmark = BookmarkListFragment()
+        timeline = BookmarkListFragment.getInstance(true)
+        bookmark = BookmarkListFragment.getInstance(false)
         setting = SettingFragment()
 
         fragmentManager
