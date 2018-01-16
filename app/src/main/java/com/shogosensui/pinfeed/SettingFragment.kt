@@ -1,20 +1,26 @@
 package com.shogosensui.pinfeed
 
 import android.app.Fragment
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import com.shogosensui.pinfeed.payload.ApiTokenPayload
+import com.shogosensui.pinfeed.payload.SecretTokenPayload
+import com.shogosensui.pinfeed.service.PinboardApiService
+import com.shogosensui.pinfeed.service.ServiceClientProvider
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SettingFragment : Fragment() {
-    lateinit var setting: SharedPreferences
     lateinit var userIdText: EditText
     lateinit var passwordText: EditText
     lateinit var saveButton: Button
+    lateinit var apiClient: PinboardApiService
 
     companion object {
         fun getInstance() : SettingFragment {
@@ -24,7 +30,8 @@ class SettingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setting = context.getSharedPreferences(getString(R.string.setting_pinboard), Context.MODE_PRIVATE)
+
+        apiClient = ServiceClientProvider.provideApiService()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -37,13 +44,36 @@ class SettingFragment : Fragment() {
         passwordText = view.findViewById(R.id.pinboard_password)
         saveButton = view.findViewById(R.id.save)
 
-        userIdText.setText(setting.getString(getString(R.string.setting_user_id), ""))
-        passwordText.setText(setting.getString(getString(R.string.setting_password), ""))
+        userIdText.setText(MainApplication.preference.userId)
+        passwordText.setText(MainApplication.preference.password)
+
         saveButton.setOnClickListener {
-            var edit = setting.edit()
-            edit.putString(getString(R.string.setting_user_id), userIdText.text.toString())
-            edit.putString(getString(R.string.setting_password), passwordText.text.toString())
-            edit.commit()
+            MainApplication.preference.userId = userIdText.text.toString()
+            MainApplication.preference.password = passwordText.text.toString()
+
+            apiClient.apiToken(PinboardApiService.credentials).enqueue(object : Callback<ApiTokenPayload> {
+                override fun onResponse(call: Call<ApiTokenPayload>, response: Response<ApiTokenPayload>) {
+                    response.body()?.let {
+                        MainApplication.preference.apiToken = it.result
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiTokenPayload>, t: Throwable?) {
+                    Log.e("onFailure", "Failed to get api token")
+                }
+            })
+
+            apiClient.secretToken(PinboardApiService.credentials).enqueue(object : Callback<SecretTokenPayload> {
+                override fun onResponse(call: Call<SecretTokenPayload>, response: Response<SecretTokenPayload>) {
+                    response.body()?.let {
+                        MainApplication.preference.secretToken = it.result
+                    }
+                }
+
+                override fun onFailure(call: Call<SecretTokenPayload>, t: Throwable?) {
+                    Log.e("onFailure", "Failed to get secret token")
+                }
+            })
         }
     }
 }
