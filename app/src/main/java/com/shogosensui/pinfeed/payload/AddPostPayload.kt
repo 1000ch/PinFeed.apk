@@ -1,3 +1,5 @@
 package com.shogosensui.pinfeed.payload
 
-data class AddPostPayload(val result_code: String)
+import java.io.Serializable
+
+data class AddPostPayload(val result_code: String) : Serializable

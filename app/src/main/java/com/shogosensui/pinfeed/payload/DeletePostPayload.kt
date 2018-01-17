@@ -1,3 +1,5 @@
 package com.shogosensui.pinfeed.payload
 
-data class DeletePostPayload(val result_code: String)
+import java.io.Serializable
+
+data class DeletePostPayload(val result_code: String) : Serializable

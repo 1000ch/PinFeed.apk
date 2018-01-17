@@ -1,5 +1,6 @@
 package com.shogosensui.pinfeed.payload
 
+import java.io.Serializable
 import java.net.URL
 import java.util.Date
 
@@ -12,4 +13,4 @@ data class Bookmark(
         val n: String,
         val t: List<String>,
         val u: URL
-)
+) : Serializable

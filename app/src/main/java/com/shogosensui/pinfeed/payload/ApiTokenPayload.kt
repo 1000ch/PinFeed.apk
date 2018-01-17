@@ -1,3 +1,5 @@
 package com.shogosensui.pinfeed.payload
 
-data class ApiTokenPayload(val result: String)
+import java.io.Serializable
+
+data class ApiTokenPayload(val result: String) : Serializable
