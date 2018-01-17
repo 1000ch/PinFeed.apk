@@ -3,15 +3,11 @@ package com.shogosensui.pinfeed
 import android.app.Application
 import android.util.Log
 import com.shogosensui.pinfeed.payload.Bookmark
-import com.shogosensui.pinfeed.payload.BookmarkPayload
-import com.shogosensui.pinfeed.service.PinboardFeedService
-import com.shogosensui.pinfeed.service.ServiceClientProvider
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.shogosensui.pinfeed.api.PinboardFeedApi
+import com.shogosensui.pinfeed.api.ApiClientProvider
 
 class MainApplication : Application() {
-    lateinit var feedClient: PinboardFeedService
+    lateinit var pinboardFeedApi: PinboardFeedApi
 
     companion object {
         lateinit var preference: Preference
@@ -22,11 +18,11 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        feedClient = ServiceClientProvider.provideFeedService()
+        pinboardFeedApi = ApiClientProvider.provideFeedApi()
         preference = Preference(this)
 
-        val bookmarkStream = feedClient.bookmark(preference.secretToken, "1000ch")
-        val timelineStream = feedClient.network(preference.secretToken, "1000ch").mergeWith(bookmarkStream)
+        val bookmarkStream = pinboardFeedApi.bookmark(preference.secretToken, "1000ch")
+        val timelineStream = pinboardFeedApi.network(preference.secretToken, "1000ch").mergeWith(bookmarkStream)
 
         bookmarkStream.subscribe({ b ->
             bookmark = b

@@ -1,28 +1,28 @@
-package com.shogosensui.pinfeed.service
+package com.shogosensui.pinfeed.api
 
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ServiceClientProvider {
+class ApiClientProvider {
     companion object {
-        fun provideApiService(): PinboardApiService {
+        fun provideApi(): PinboardApi {
             return Retrofit.Builder()
-                    .baseUrl(PinboardApiService.baseUrl)
+                    .baseUrl(PinboardApi.baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .build()
-                    .create(PinboardApiService::class.java)
+                    .create(PinboardApi::class.java)
         }
 
-        fun provideFeedService(): PinboardFeedService {
+        fun provideFeedApi(): PinboardFeedApi {
             return Retrofit.Builder()
-                    .baseUrl(PinboardFeedService.baseUrl)
+                    .baseUrl(PinboardFeedApi.baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .build()
-                    .create(PinboardFeedService::class.java)
+                    .create(PinboardFeedApi::class.java)
         }
     }
 }

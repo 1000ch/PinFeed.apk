@@ -8,14 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import com.shogosensui.pinfeed.service.PinboardApiService
-import com.shogosensui.pinfeed.service.ServiceClientProvider
+import com.shogosensui.pinfeed.api.PinboardApi
+import com.shogosensui.pinfeed.api.ApiClientProvider
 
 class SettingFragment : Fragment() {
     lateinit var userIdText: EditText
     lateinit var passwordText: EditText
     lateinit var saveButton: Button
-    lateinit var apiClient: PinboardApiService
+    lateinit var pinboardApi: PinboardApi
 
     companion object {
         fun getInstance() : SettingFragment {
@@ -26,7 +26,7 @@ class SettingFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        apiClient = ServiceClientProvider.provideApiService()
+        pinboardApi = ApiClientProvider.provideApi()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -46,13 +46,13 @@ class SettingFragment : Fragment() {
             MainApplication.preference.userId = userIdText.text.toString()
             MainApplication.preference.password = passwordText.text.toString()
 
-            apiClient.apiToken(MainApplication.preference.credentials).subscribe({ payload ->
+            pinboardApi.apiToken(MainApplication.preference.credentials).subscribe({ payload ->
                 MainApplication.preference.apiToken = payload.result
             }, { error ->
                 Log.e("apiToken", "error", error)
             })
 
-            apiClient.secretToken(MainApplication.preference.credentials).subscribe({ payload ->
+            pinboardApi.secretToken(MainApplication.preference.credentials).subscribe({ payload ->
                 MainApplication.preference.secretToken = payload.result
             }, { error ->
                 Log.e("secretToken", "error", error)

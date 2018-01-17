@@ -1,13 +1,13 @@
-package com.shogosensui.pinfeed.service
+package com.shogosensui.pinfeed.api
 
 import com.shogosensui.pinfeed.payload.*
 import io.reactivex.Single
 import retrofit2.http.*
 
-interface PinboardApiService {
+interface PinboardApi {
     companion object {
         val baseUrl: String
-            get() = "https://api.pinboard.in"
+            get() = "https://pinboardApi.pinboard.in"
     }
 
     @GET("/v1/user/api_token")

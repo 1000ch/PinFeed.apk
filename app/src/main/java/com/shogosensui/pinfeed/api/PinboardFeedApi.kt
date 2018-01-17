@@ -1,4 +1,4 @@
-package com.shogosensui.pinfeed.service
+package com.shogosensui.pinfeed.api
 
 import com.shogosensui.pinfeed.payload.BookmarkPayload
 import io.reactivex.Single
@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface PinboardFeedService {
+interface PinboardFeedApi {
     companion object {
         val baseUrl: String
             get() = "https://feeds.pinboard.in"
