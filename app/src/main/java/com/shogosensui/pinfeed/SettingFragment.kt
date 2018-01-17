@@ -8,13 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import com.shogosensui.pinfeed.payload.ApiTokenPayload
-import com.shogosensui.pinfeed.payload.SecretTokenPayload
 import com.shogosensui.pinfeed.service.PinboardApiService
 import com.shogosensui.pinfeed.service.ServiceClientProvider
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SettingFragment : Fragment() {
     lateinit var userIdText: EditText
@@ -51,28 +46,16 @@ class SettingFragment : Fragment() {
             MainApplication.preference.userId = userIdText.text.toString()
             MainApplication.preference.password = passwordText.text.toString()
 
-            apiClient.apiToken(PinboardApiService.credentials).enqueue(object : Callback<ApiTokenPayload> {
-                override fun onResponse(call: Call<ApiTokenPayload>, response: Response<ApiTokenPayload>) {
-                    response.body()?.let {
-                        MainApplication.preference.apiToken = it.result
-                    }
-                }
-
-                override fun onFailure(call: Call<ApiTokenPayload>, t: Throwable?) {
-                    Log.e("onFailure", "Failed to get api token")
-                }
+            apiClient.apiToken(MainApplication.preference.credentials).subscribe({ payload ->
+                MainApplication.preference.apiToken = payload.result
+            }, { error ->
+                Log.e("apiToken", "error", error)
             })
 
-            apiClient.secretToken(PinboardApiService.credentials).enqueue(object : Callback<SecretTokenPayload> {
-                override fun onResponse(call: Call<SecretTokenPayload>, response: Response<SecretTokenPayload>) {
-                    response.body()?.let {
-                        MainApplication.preference.secretToken = it.result
-                    }
-                }
-
-                override fun onFailure(call: Call<SecretTokenPayload>, t: Throwable?) {
-                    Log.e("onFailure", "Failed to get secret token")
-                }
+            apiClient.secretToken(MainApplication.preference.credentials).subscribe({ payload ->
+                MainApplication.preference.secretToken = payload.result
+            }, { error ->
+                Log.e("secretToken", "error", error)
             })
         }
     }

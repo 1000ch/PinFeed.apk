@@ -15,8 +15,8 @@ class MainApplication : Application() {
 
     companion object {
         lateinit var preference: Preference
-        lateinit var bookmark: List<Bookmark>
-        lateinit var timeline: List<Bookmark>
+        var bookmark = listOf<Bookmark>()
+        var timeline = listOf<Bookmark>()
     }
 
     override fun onCreate() {
@@ -25,29 +25,21 @@ class MainApplication : Application() {
         feedClient = ServiceClientProvider.provideFeedService()
         preference = Preference(this)
 
-        feedClient.bookmark(preference.secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
-            override fun onResponse(call: Call<BookmarkPayload>, response: Response<BookmarkPayload>) {
-                response.body()?.let {
-                    bookmark = it
+        val bookmarkStream = feedClient.bookmark(preference.secretToken, "1000ch")
+        val timelineStream = feedClient.network(preference.secretToken, "1000ch").mergeWith(bookmarkStream)
 
-                    feedClient.network(preference.secretToken, "1000ch").enqueue(object : Callback<BookmarkPayload> {
-                        override fun onResponse(call: Call<BookmarkPayload>, response: Response<BookmarkPayload>) {
-                            response.body()?.let {
-                                timeline = bookmark.plus(it).sortedBy { b -> b.dt }
-                            }
-                        }
+        bookmarkStream.subscribe({ b ->
+            bookmark = b
+        }, { error ->
+            Log.e("bookmarkStream", "error", error)
+        })
 
-                        override fun onFailure(call: Call<BookmarkPayload>, t: Throwable?) {
-                            Log.e("onFailure", "Failed to get network")
-                        }
-                    })
-                    Log.d("count", it.count().toString())
-                }
+        timelineStream.subscribe({ b ->
+            timeline = b.sortedBy {
+                b -> b.dt
             }
-
-            override fun onFailure(call: Call<BookmarkPayload>, t: Throwable?) {
-                Log.e("onFailure", "Failed to get network")
-            }
+        }, { error ->
+            Log.e("timelineStream", "error", error)
         })
     }
 }

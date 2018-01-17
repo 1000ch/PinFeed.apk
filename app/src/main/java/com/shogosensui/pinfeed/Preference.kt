@@ -3,6 +3,7 @@ package com.shogosensui.pinfeed
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import okhttp3.Credentials
 
 class Preference(context: Context) {
     val p: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -18,6 +19,9 @@ class Preference(context: Context) {
             p.edit().putString("password", value).commit()
             field = value
         }
+
+    val credentials: String
+        get() = Credentials.basic(userId, password)
 
     var apiToken: String = p.getString("apiToken", "")
         set(value) {

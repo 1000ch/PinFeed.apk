@@ -1,30 +1,26 @@
 package com.shogosensui.pinfeed.service
 
 import com.shogosensui.pinfeed.payload.*
-import okhttp3.Credentials
-import retrofit2.Call
+import io.reactivex.Single
 import retrofit2.http.*
 
 interface PinboardApiService {
     companion object {
         val baseUrl: String
             get() = "https://api.pinboard.in"
-
-        val credentials: String
-            get() = Credentials.basic("", "")
     }
 
     @GET("/v1/user/api_token")
     fun apiToken(
             @Header("Authorization") authorization: String,
             @Query("format") format: String? = "json"
-    ): Call<ApiTokenPayload>
+    ): Single<ApiTokenPayload>
 
     @GET("/v1/user/secret")
     fun secretToken(
             @Header("Authorization") authorization: String,
             @Query("format") format: String? = "json"
-    ): Call<SecretTokenPayload>
+    ): Single<SecretTokenPayload>
 
     @GET("/v1/posts/get")
     fun getPost(
@@ -34,7 +30,7 @@ interface PinboardApiService {
             @Query("dt") dt: String?,
             @Query("url") url: String?,
             @Query("meta") meta: String?
-    ): Call<GetPostPayload>
+    ): Single<GetPostPayload>
 
     @POST("/v1/posts/add")
     fun addPost(
@@ -48,12 +44,12 @@ interface PinboardApiService {
             @Query("replace") replace: String?,
             @Query("shared") shared: String?,
             @Query("toread") toread: String?
-    ): Call<AddPostPayload>
+    ): Single<AddPostPayload>
 
     @DELETE("/v1/posts/delete")
     fun deletePost(
             @Header("Authorization") authorization: String,
             @Query("format") format: String? = "json",
             @Query("url") url: String
-    ): Call<DeletePostPayload>
+    ): Single<DeletePostPayload>
 }
