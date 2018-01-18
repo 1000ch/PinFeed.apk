@@ -13,10 +13,12 @@ class BookmarkListFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
 
     companion object {
+        const val BOOKMARKS = "bookmarks"
+
         fun getInstance(bookmarks: ArrayList<Bookmark>): BookmarkListFragment {
             val fragment = BookmarkListFragment()
             val args = Bundle()
-            args.putParcelableArrayList("bookmarks", bookmarks)
+            args.putParcelableArrayList(BOOKMARKS, bookmarks)
             fragment.arguments = args
             return fragment
         }
@@ -33,7 +35,7 @@ class BookmarkListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val parcelableBookmarks = arguments.getParcelableArrayList<Bookmark>("bookmarks") ?: return
+        val parcelableBookmarks = arguments.getParcelableArrayList<Bookmark>(BOOKMARKS) ?: return
         val bookmarks = parcelableBookmarks.toList()
         recyclerView = view as RecyclerView
         recyclerView.adapter = BookmarkAdapter(bookmarks)
